@@ -18,7 +18,7 @@ module.exports = {
         next();
       } else {
         const err = new Error('No such course');
-        err.status = 400;
+        err.status = 404;
         next(err);
       }
     })

@@ -23,13 +23,17 @@ module.exports = {
         }
       })
       .catch( err => {
-        err.status = 401;
+        req.method === 'PUT' ||  req.method === 'DELETE' 
+        ? err.status = 403 
+        : err.status = 401;
         err.message = 'Access Denied';
         next(err); 
       });
     } else { 
       const err = new Error('Access Denied');
-      err.status = 401;
+      req.method === 'PUT' ||  req.method === 'DELETE' 
+      ? err.status = 403 
+      : err.status = 401;
       next(err);
     }
   }

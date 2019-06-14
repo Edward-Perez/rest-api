@@ -36,7 +36,7 @@ router.get('/:id', (req, res, next) =>{
     if (course) {
       res.status(200).json(course);
     } else {
-      res.status(400).json({msg: "No such course in database"})
+      res.status(404).json({msg: "No such course in database"})
     }
   })
   .catch(err => {
