@@ -23,10 +23,9 @@ db.authenticate()
   .then(() => console.log('Database Connected'))
   .catch(err => console.log('Database Connection Failed', err));
 
-// Database sync
+// Database sync on express server
 db.sync()
   .then(() => {
-    // server listening
     const server = app.listen(app.get('port'), () => {
       console.log(`Express server is listening on port ${server.address().port}`);
     });
@@ -52,6 +51,6 @@ app.use((err, req, res, next) => {
   
   res.status(err.status || 500).json({
     message: err.message,
-    error: {},
+    error: { type: err.errors },
   });
 });
