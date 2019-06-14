@@ -17,7 +17,9 @@ module.exports = {
         req.course = course;
         next();
       } else {
-        res.status(403).json({msg: "Access Denied"});
+        const err = new Error('No such course');
+        err.status = 400;
+        next(err);
       }
     })
     .catch(err => {

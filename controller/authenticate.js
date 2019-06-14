@@ -19,9 +19,7 @@ module.exports = {
           req.user = user;
           next();
         } else {
-          const err = new Error('Access Denied');
-          err.status = 401;
-          next(err);
+          throw new Error();
         }
       })
       .catch( err => {
