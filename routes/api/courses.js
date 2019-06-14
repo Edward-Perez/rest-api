@@ -54,7 +54,6 @@ router.post('/', authUser, (req, res, next) => {
     res.location(`/api/courses/${id}`).status(201).end();
     })
   .catch(err => {
-    err.message = err.errors[0].message;
     err.status = 400;
     next(err);
   });
@@ -64,8 +63,8 @@ router.post('/', authUser, (req, res, next) => {
 router.put('/:id', authUser, findOneCourse, async (req, res, next) => {
   const course = await req.course;
   const courseUpdate = await req.body;
-  if (!courseUpdate.title) {
-    const err = new Error('Title is required');
+  if (!courseUpdate.title || !courseUpdate.description) {
+    const err = new Error('Validation Error for title / description.');
     err.status = 400;
     return next(err);
   }
@@ -81,7 +80,7 @@ router.put('/:id', authUser, findOneCourse, async (req, res, next) => {
 // Delete Course
 router.delete('/:id', authUser, findOneCourse, async (req, res, next) => {
   const course = await req.course;
-  course.destroy()
+  course.destroy({ force: true })
   .then(() => res.status(204).end())
   .catch(err => {
     err.message = err.errors[0].message || 'Could not delete course';

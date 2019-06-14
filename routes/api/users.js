@@ -12,15 +12,10 @@ router.get('/', authUser, (req, res, next) => {
 // Create New User 
 router.post('/', async (req, res, next) => {
   const userInfo = await req.body;
-  if (!userInfo.firstName) {
-    const err = new Error('First Name is required');
-    err.status = 400;
-    return next(err);
-  } 
   User.create(userInfo)
   .then(() => res.location('/api/users').status(201).end())
   .catch(err => {
-    err.message = err.errors[0].message;
+    err.message = err.message || err.errors[0].message;
     err.status = 400;
     next(err);
   });
